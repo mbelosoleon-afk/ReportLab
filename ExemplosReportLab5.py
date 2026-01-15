@@ -21,8 +21,8 @@ graficoBarras.valueAxis.valueMax = 70
 graficoBarras.valueAxis.valueStep = 10
 graficoBarras.categoryAxis.labels.boxAnchor = 'ne'
 graficoBarras.categoryAxis.labels.dx = 8
-graficoBarras.categoryAxis.labels.dy = -2
-graficoBarras.categoryAxis.labels.angle = 30
+graficoBarras.categoryAxis.labels.dy = -5
+graficoBarras.categoryAxis.labels.angle = 15
 graficoBarras.categoryAxis.categoryNames = lendaDatos
 graficoBarras.barSpacing = 5
 
