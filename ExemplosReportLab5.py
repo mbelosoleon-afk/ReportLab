@@ -1,8 +1,14 @@
-from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.graphics.charts.barcharts import VerticalBarChart, HorizontalBarChart
+from reportlab.graphics.charts.linecharts import HorizontalLineChart
+from reportlab.graphics.charts.piecharts import Pie
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.textlabels import Label
-from reportlab.platypus import SimpleDocTemplate
+from reportlab.graphics.charts.legends import Legend
+from reportlab.graphics.widgets.markers import makeMarker
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Spacer
 from reportlab.lib.pagesizes import A4
+from reportlab.rl_settings import strikeWidth
 
 d = Drawing(400, 200)
 
@@ -40,7 +46,71 @@ graficoBarras.barSpacing = 5
 
 d.add(graficoBarras)
 
+d2 = Drawing(400, 200)
+
+graficoLinhas = HorizontalLineChart()
+graficoLinhas.x = 30
+graficoLinhas.y = 100
+graficoLinhas.height = 125
+graficoLinhas.width = 350
+graficoLinhas.data = datos
+graficoLinhas.categoryAxis.categoryNames = lendaDatos
+graficoLinhas.categoryAxis.labels.boxAnchor = 'n'
+graficoLinhas.valueAxis.valueMin = 0
+graficoLinhas.valueAxis.valueMax = 100
+graficoLinhas.valueAxis.valueStep = 20
+graficoLinhas.lines[0].strokeWidth = 2
+graficoLinhas.lines[0].symbol = makeMarker('FilledCircle')
+graficoLinhas.lines[1].strokeWidth = 1.5
+
+d2.add(graficoLinhas)
+
+d3 = Drawing(400,200)
+
+tarta = Pie()
+tarta.x = 65
+tarta.y = 15
+tarta.height = 170
+tarta.width = 170
+tarta.data = [10,20,30,40,50]
+tarta.labels = ['Oppo', 'Pixel', 'Galaxy', 'Iphone', 'Xiami']
+tarta.slices.strokeWidth = 0.5
+tarta.slices[3].popout = 10
+tarta.slices[3].strokeDashArray = [2,2]
+tarta.slices[3].labelRadius = 1.75
+tarta.slices[3].fontColor = colors.red
+tarta.sideLabels = 1
+
+
+colores = [colors.blue, colors.red, colors.green, colors.yellow, colors.orange]
+for i, color in enumerate(colores):
+    tarta.slices[i].fillColor = color
+
+
+lenda = Legend()
+lenda.x = 370
+lenda.y = 5
+lenda.fontName = 'Helvetica'
+lenda.fontSize = 7
+lenda.boxAnchor = 'n'
+lenda.columnMaximum = 3
+lenda.strokeWidth = 1
+lenda.strokeColor = colors.black
+lenda.deltax = 75
+lenda.deltay = 10
+lenda.autoXPadding = 5
+lenda.yGap = 0
+lenda.dxTextSpace = 5
+lenda.alignment = 'right'
+lenda.dividerLines = 1|2|4
+lenda.dividerOffsY = 4.5
+lenda.subCols.rpad = 30
+
+d3.add(lenda)
+
+
+d3.add(tarta)
 doc = SimpleDocTemplate("exemploGraficos.pdf", pagesize = A4)
 
-doc.build([d])
+doc.build([d, Spacer(20,20),d2, Spacer(20,20), d3])
 
