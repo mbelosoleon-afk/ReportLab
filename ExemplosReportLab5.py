@@ -73,7 +73,7 @@ tarta.y = 15
 tarta.height = 170
 tarta.width = 170
 tarta.data = [10,20,30,40,50]
-tarta.labels = ['Oppo', 'Pixel', 'Galaxy', 'Iphone', 'Xiami']
+tarta.labels = ['Oppo', 'Pixel', 'Galaxy', 'Iphone', 'Xiaomi']
 tarta.slices.strokeWidth = 0.5
 tarta.slices[3].popout = 10
 tarta.slices[3].strokeDashArray = [2,2]
@@ -86,8 +86,12 @@ colores = [colors.blue, colors.red, colors.green, colors.yellow, colors.orange]
 for i, color in enumerate(colores):
     tarta.slices[i].fillColor = color
 
-
 lenda = Legend()
+
+lenda.colorNamePairs = [(tarta.slices[i].fillColor, (tarta.labels[i][0:20],
+                        '%0.2f' % tarta.data[i]))
+                        for i in range (len(tarta.data))]
+
 lenda.x = 370
 lenda.y = 5
 lenda.fontName = 'Helvetica'
@@ -103,7 +107,7 @@ lenda.yGap = 0
 lenda.dxTextSpace = 5
 lenda.alignment = 'right'
 lenda.dividerLines = 1|2|4
-lenda.dividerOffsY = 4.5
+lenda.dividerOffsY = 5.5
 lenda.subCols.rpad = 30
 
 d3.add(lenda)
