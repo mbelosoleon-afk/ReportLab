@@ -1,4 +1,4 @@
-# Doc con Platypus
+#---DOC CON PLATYPUS---
 from reportlab.platypus import Paragraph # parágrafos
 from reportlab.platypus import Image # imaxes
 from reportlab.lib.styles import getSampleStyleSheet # folla de estilos

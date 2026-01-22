@@ -29,20 +29,20 @@ lendaDatos = ['11/12', '12/13', '13/14', '14/15', '15/16', '16/17', '17/18', '18
 graficoBarras = VerticalBarChart()
 
 
-graficoBarras.x = 50
-graficoBarras.y = 50
-graficoBarras.height = 125
-graficoBarras.width = 300
-graficoBarras.data = datos
-graficoBarras.valueAxis.valueMin = 0
-graficoBarras.valueAxis.valueMax = 100
-graficoBarras.valueAxis.valueStep = 10
-graficoBarras.categoryAxis.labels.boxAnchor = 'ne'
-graficoBarras.categoryAxis.labels.dx = 8
-graficoBarras.categoryAxis.labels.dy = -5
-graficoBarras.categoryAxis.labels.angle = 15
-graficoBarras.categoryAxis.categoryNames = lendaDatos
-graficoBarras.barSpacing = 5
+graficoBarras.x = 50 #Desplazamiento horizontal
+graficoBarras.y = 50 #Desplazamiento vertical
+graficoBarras.height = 125 #Altura
+graficoBarras.width = 300 #Ancho
+graficoBarras.data = datos #Asigna la lista de tuplas que se convenrtirán en barras
+graficoBarras.valueAxis.valueMin = 0 #Valor min Y
+graficoBarras.valueAxis.valueMax = 70 #Valor max X
+graficoBarras.valueAxis.valueStep = 10 #Indica cada cuanto se dibuja una marca o número en el eje
+graficoBarras.categoryAxis.labels.boxAnchor = 'ne' #Punto de anclaje de la etiqueta, puntos cardinales
+graficoBarras.categoryAxis.labels.dx = 8 #Desplazamiento X
+graficoBarras.categoryAxis.labels.dy = -10 #Desplazamiento Y
+graficoBarras.categoryAxis.labels.angle = 30 #Rota el texto
+graficoBarras.categoryAxis.categoryNames = lendaDatos #Asigna los nombres de las categorías a cada grupo de barras
+graficoBarras.groupSpacing = 10 #Espacio entre puntos
 
 d.add(graficoBarras)
 
@@ -55,12 +55,12 @@ graficoLinhas.height = 125
 graficoLinhas.width = 350
 graficoLinhas.data = datos
 graficoLinhas.categoryAxis.categoryNames = lendaDatos
-graficoLinhas.categoryAxis.labels.boxAnchor = 'n'
-graficoLinhas.valueAxis.valueMin = 0
-graficoLinhas.valueAxis.valueMax = 100
+graficoLinhas.categoryAxis.labels.boxAnchor = 'n' #Puntos cardinales
+graficoLinhas.valueAxis.valueMin = 0 #Valor min Y
+graficoLinhas.valueAxis.valueMax = 100 #Valor max Y
 graficoLinhas.valueAxis.valueStep = 20
-graficoLinhas.lines[0].strokeWidth = 2
-graficoLinhas.lines[0].symbol = makeMarker('FilledCircle')
+graficoLinhas.lines[0].strokeWidth = 2 #La línea 0 es más gruesa
+graficoLinhas.lines[0].symbol = makeMarker('FilledCircle') #Añade un círculo en cada puntos de datos
 graficoLinhas.lines[1].strokeWidth = 1.5
 
 d2.add(graficoLinhas)
