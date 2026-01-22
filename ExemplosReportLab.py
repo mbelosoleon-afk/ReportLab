@@ -1,6 +1,8 @@
 from reportlab.pdfgen import canvas
 import os
 
+#---PDFS CON CANVAS---
+
 # Usamos la ruta absoluta para evitar errores de ubicación
 guia_carpetas = os.path.dirname(os.path.abspath(__file__))
 
