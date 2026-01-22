@@ -14,22 +14,30 @@ texto = ('Este texto é para exemplo',
 obxCanvas = canvas.Canvas("3ºtextoCanvas.pdf")
 
 # Modificaciones del texto que se añadirá
+#Crea un objeto de texto
 obxTexto = obxCanvas.beginText()
+#Establece la posición inicial del bloque de texto
 obxTexto.setTextOrigin(100,500)
+#Cambia la tipografía
 obxTexto.setFont("Courier",16)
 
 # Para añadir el texto en el pdf ordenado
 for linha in texto:
+    #Mueve el cursor relativamente a su posición actual
     obxTexto.moveCursor(20,15)
+    #Escribe la cadena y automaticamente salta a la siguiente línea
     obxTexto.textLine(linha)
+    #Color mediante valores decimales
     obxTexto.setFillColorRGB(0.2,0,0.6)
 
 # Añade otro texto de un color mas claro
+#Añade otra escala de grises
 obxTexto.setFillGray(0.5)
 textoLongo = """Outro texto con varias
                 liñas incorporadas,
                 con retornos de carro \nincluidos."""
 # Con textLines nos permite recoger el texto con retornos te carro, salto de linea, etc.
+#Ideal para textos largos
 obxTexto.textLines(textoLongo)
 
 # Modifica la posición del nuevo texto introducido sin modificar las del anterior
@@ -44,26 +52,30 @@ for tipo_letra in obxCanvas.getAvailableFonts():
 
 # Añade otro texto con sus configuraciones
 obxTexto.setTextOrigin(20,800)
-#obxTexto.setFillColorRGB(0.2, 0, 0.6) # Otra forma de poner color al texto
+#Color por nombre
 obxTexto.setFillColor('pink',1) # En vez de poner color con números se pone con nombre
 obxTexto.setFont('Helvetica-BoldOblique',12)
 for linha in texto:
     obxTexto.moveCursor(20,15)
+    #Escribe el texto pero NO salta de línea
     obxTexto.textOut(linha)
 
 obxTexto.moveCursor(-60 , 15)
 espazoCaracteres = 0
 for linha in texto:
+    #Ajusta el espacio entre letras
     obxTexto.setCharSpace(espazoCaracteres)
     obxTexto.textLine("Espazo %s: %s:" % (espazoCaracteres,linha))
     espazoCaracteres += 1
 
 obxTexto.setTextOrigin(20, 550)
 obxTexto.setCharSpace(1)
+#Ajusta el espacio entre palabras
 obxTexto.setWordSpace(8)
 obxTexto.textLines(textoLongo)
 
 # Pinta el texto por pantalla (ambos textos)
+#Es el comando final, sin esto, nada de lo que hagas en el objeto de texto aparecerá en el PDF
 obxCanvas.drawText(obxTexto)
 
 # Configuraciones para que se muestre todo  correctamente en el pdf
