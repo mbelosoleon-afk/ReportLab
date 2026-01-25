@@ -1,4 +1,4 @@
-# EXEMPLO CANVAS
+#---CONTROL AVANZADO DE TEXTO---
 
 from reportlab.pdfgen import canvas
 
@@ -13,11 +13,12 @@ texto = ('Este texto é para exemplo',
 # Objeto canvas que genera el pdf
 obxCanvas = canvas.Canvas("3ºtextoCanvas.pdf")
 
-# Modificaciones del texto que se añadirá
-#Crea un objeto de texto
+#Crea un objeto de texto que permite configuraciones complejas
 obxTexto = obxCanvas.beginText()
-#Establece la posición inicial del bloque de texto
+
+#setTextOrigin(x,y) Controla la posición inicial del texto
 obxTexto.setTextOrigin(100,500)
+
 #Cambia la tipografía
 obxTexto.setFont("Courier",16)
 
@@ -25,7 +26,7 @@ obxTexto.setFont("Courier",16)
 for linha in texto:
     #Mueve el cursor relativamente a su posición actual
     obxTexto.moveCursor(20,15)
-    #Escribe la cadena y automaticamente salta a la siguiente línea
+    #Escribe una línea de texto y avanza el cursor
     obxTexto.textLine(linha)
     #Color mediante valores decimales
     obxTexto.setFillColorRGB(0.2,0,0.6)
@@ -36,8 +37,7 @@ obxTexto.setFillGray(0.5)
 textoLongo = """Outro texto con varias
                 liñas incorporadas,
                 con retornos de carro \nincluidos."""
-# Con textLines nos permite recoger el texto con retornos te carro, salto de linea, etc.
-#Ideal para textos largos
+#Escribe un bloque de texto que puede tener saltos de línea
 obxTexto.textLines(textoLongo)
 
 # Modifica la posición del nuevo texto introducido sin modificar las del anterior
@@ -74,10 +74,8 @@ obxTexto.setCharSpace(1)
 obxTexto.setWordSpace(8)
 obxTexto.textLines(textoLongo)
 
-# Pinta el texto por pantalla (ambos textos)
-#Es el comando final, sin esto, nada de lo que hagas en el objeto de texto aparecerá en el PDF
+#Dibuja el objeto de texto en el canvas
 obxCanvas.drawText(obxTexto)
 
-# Configuraciones para que se muestre todo  correctamente en el pdf
 obxCanvas.showPage()
 obxCanvas.save()
