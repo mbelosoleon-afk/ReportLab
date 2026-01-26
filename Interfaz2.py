@@ -1,107 +1,101 @@
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from reportlab.lib import colors
-from reportlab.platypus import Table, TableStyle
+from reportlab.platypus import Paragraph, Image, Spacer, SimpleDocTemplate, Table
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import A5
+from reportlab.lib import colors, styles
+from reportlab.platypus import KeepTogether
 
-from ExemplosReportLab3 import obxTexto
+guion = []
+hoja = getSampleStyleSheet()
 
-#Creaci
-folla = canvas.Canvas("Interfaz2.pdf",pagesize=A4)
-width, height = A4
+sp = Spacer(20,20)
 
-#--ENCABEZADO (uso de drawString())
-folla.setFont("Helvetica-Bold",22)
-folla.drawString(40,height -60, "FACTURA Proforma")
+cabecera = hoja["Heading1"]
+cabecera.fontSize=13
+cabecera.alignment=0
+cabecera.textColor = colors.black
 
-#--Simulación de logo con texto (puedes usar drawImage() si tienes el archivo)ç
-folla.setFillColor(colors.lightgrey)
-folla.setFont("Helvetica-Bold",18)
-folla.drawString(width - 140, height - 60,"sevDesk")
-folla.setFillColor(colors.black)
+"""
+Tabla 1
+"""
+l1 = ['FACTURAR A:', 'Nº FACTURA']
+l2 = ['Cliente', 'Fecha']
+l3 = ['Domicilio', 'Nº del pedido']
+l4 = ['Código postal/ciudad','Fecha de vencimiento']
+l5 = ['(NIF)', 'Condiciones de pago']
 
-#--BLOQUE DE DATOS DEL CLIENTE (Control de texto avanzado)--
-obxTexto = folla.beginText()
-obxTexto.setTextOrigin(40, height - 100)
-obxTexto.setFont("Helvetica-Bold", 10)
-obxTexto.textLine("FACTURAR A:")
-
-obxTexto.setFont("Helvetica", 10)
-#Movemos el cursor para dejar espacio tras el título
-obxTexto.moveCursor(0,5)
-datos_cliente = ["Cliente", "Domicilio", "Código postal / ciudad", "(NIF)"]
-for linea in datos_cliente:
-    obxTexto.textLine(linea)
-
-#Dibujamos el bloque de texto del cliente
-folla.drawText(obxTexto)
-
-#Datos de la factura (Derecha)
-obxTextoDer = folla.beginText(width -220, height - 90)
-obxTextoDer.setFont("Helvetica-Bold", 14)
-obxTextoDer.textLine("Nª DE FACTURA")
-obxTextoDer.setFont("Helvetica", 10)
-obxTexto.moveCursor(0,5)
-
-lineas_factura = ["Fecha", "Nª de pedido", "Fecha de vencimiento", "Condiciones de pago"]
-for linea in lineas_factura:
-    obxTextoDer.textLine(linea)
-
-folla.drawText(obxTextoDer)
-
-#--TABLA DE CONCEPTOS (Tablas con Platypus)--
-#Definimos los datos (cabecera + filas vacías para completar)
-encabezado_tabla = ['Pos.', 'Concepto/Descripción', 'Cantidad', 'Unidad', 'Precio unit.', 'Importe']
-fila_vacia1 = ['1', '', '', '', '', '']
-fila_vacia2 = ['2', '', '', '', '', '']
-
-datos_taboa = [encabezado_tabla, fila_vacia1, fila_vacia2, ['', '', '', '', '' ,'']]
-
-#Creamos la tabla
-taboa = Table(datos_taboa)
-
-taboa.setStyle([
-    ('BACKGROUND',(0,0),(-1,0), colors.lightgrey),
-    ('GRID', (0,0),(-1,-1),0.5, colors.grey),
-    ('VALIGN',(0,0),(-1,-1),'MIDDLE'),
-    ('FONTNAME',(0,0),(-1,0),"Helvetica-Bold"),
-    ('ALIGN',(0,0),(0,-1),"CENTER")
+titulo=Paragraph("FACTURA Proforma", cabecera)
+tab1 = Table([l1, l2, l3, l4, l5], hAlign='CENTER')
+tab1.setStyle([
+    ('INNERGRID', (0, 0), (1,4), 0.5, colors.lightgrey),
+    ('RIGHTPADDING', (0, 0), (0,4), 35),
+    ('LEFTPADDING', (1, 0), (1,4), 35),
+    ('BACKGROUND', (0,0), (1,4), colors.lightgrey),
+    ('FONTSIZE', (1,0), (1,0), 12),
 ])
 
-#Como estamos usando Canvas, usamos wrapOn y drawOn para la tabla
-taboa.wrapOn(folla,width,height)
-taboa.drawOn(folla,40,height-320)
+"""
+Tabla 2
+"""
+t1 = ['Pos.\n', 'Concepto/Descripción\n', 'Cantidad\n', 'Unidad\n', 'Precio\nunitario', 'Importe\n']
+t2 = ['1', '', '', '', '', '']
+t3 = ['2', '', '', '', '', '']
+blanc = ['', '', '', '', '', '']
 
-#--SECCIÓN INFERIOR: MÉTODOS Y TOTALES--
-
-#Cuadro de método de pago (Dibujo con rect)
-folla.rect(40,height-420,250,60)
-folla.setFont("Helvetica",9)
-folla.drawString(45,height-375,"Método de pago:")
-
-#Tabla de totales
-datos_totales = [
-    ['Importe neto', ''],
-    ['+ IVA de   %', ''],
-    ['- IRPF de   %', ''],
-    ['IMPORTE BRUTO', '']
-]
-
-taboa_totales = Table(datos_totales)
-taboa_totales.setStyle([
-    ('GRID',(0,0),(-1,-2),0.5,colors.grey),
-    ('BOX',(0,3),(1,3),1,colors.black),
-    ('BACKGROUND',(0,3),(1,3),colors.lightgrey),
-    ('FONTNAME',(0,3),(0,3),"Helvetica-Bold"),
-    ('ALIGN',(1,0),(1,-1),'RIGHT'),
+tab2 = Table([t1, t2, t3, blanc],  hAlign='CENTER')
+tab2.setStyle([
+    ('FONTSIZE', (0,0), (5,3), 8),
+    ("BOX", (0,0), (5,3), 0.5, colors.black),
+    ('RIGHTPADDING', (0, 0), (5,3), 6),
+    ('LEFTPADDING', (1, 0), (5,3), 6),
+    ('INNERGRID', (0, 0), (5,3), 0.5, colors.black),
+    ('BACKGROUND', (0, 0), (5,0), colors.lightgrey),
 ])
 
-taboa_totales.wrapOn(folla,width,height)
-taboa_totales.drawOn(folla,width-240,height-440)
+"""
+Tabla 3
+"""
+m1 = ['Método de pago:', '']
+b = ['','']
+tab3 = Table([m1, b])
+tab3.setStyle([
+    ('BOX', (0, 0), (1, 1), 0.5, colors.black),
+    ('FONTSIZE', (0, 0), (0, 0), 8),
+    ('RIGHTPADDING', (0, 0), (0, 1), 50),
+    ('BOTTOMPADDING', (0, 0), (1, 1), 10),
+])
 
-#Pie de págoina final
-folla.setFont("Helvetica",10)
-folla.drawString(40,height-500,"Gracias por su confianza")
-folla.drawString(40,height-540,"Atentamente,")
+"""
+Tabla 4
+"""
+k1 = ['Importe neto', '']
+k2 = ['+ IVA de ||| %', '']
+k3 = ['- IRPF de ||| %', '']
+k5 = ['IMPORTE BRUTO', '']
 
-folla.showPage()
-folla.save()
+tab4 = Table([k1, k2, k3, k5], hAlign='LEFT')
+tab4.setStyle([
+    ('INNERGRID', (0,0), (1,3), 0.5, colors.black),
+    ('LINEABOVE',(0,3), (1,3), 1.5, colors.black),
+    ('BOX', (0, 0), (1, 3), 0.5, colors.black),
+    ('BACKGROUND', (0, 3), (1, 3), colors.lightgrey),
+    ('RIGHTPADDING', (1, 3), (1, 3), 20),
+])
+
+tablaa = Table([[tab3, tab4], b])
+tablaa.setStyle([
+    ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+    ('VALIGN', (0,0), (0,0), 'TOP'),
+])
+
+guion.append(titulo)
+guion.append(sp)
+guion.append(tab1)
+guion.append(sp)
+guion.append(tab2)
+guion.append(sp)
+guion.append(sp)
+guion.append(tablaa)
+
+
+doc = SimpleDocTemplate("Factura2.pdf", pagesize=A5, showBoundary=0)
+doc.build (guion)
